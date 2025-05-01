@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attribute Tracker</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    canvas {
+      max-width: 500px;
+      margin: 20px auto;
+    }
+    input[type="number"] {
+      width: 60px;
+    }
+    .input-group {
+      margin: 10px 0;
+    }
+    .task-log {
+      margin-top: 20px;
+    }
+    textarea {
+      width: 80%;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Bro's Tracker</h2>
+  <canvas id="radarChart"></canvas>
+  <h3>Overall Score: <span id="overallScore">0</span></h3>
+
+  <div id="inputs"></div>
+
+  <div class="task-log">
+    <h4>Task Log</h4>
+    <textarea id="taskLog" placeholder="Log your tasks here..."></textarea>
+  </div>
+
+  <script>
+    const attributes = ["Physical", "Mental", "Intellect", "Ambition", "Discipline", "Relationship"];
+    let dataValues = [50, 50, 50, 50, 50, 50];
+
+    const ctx = document.getElementById("radarChart").getContext("2d");
+    const radarChart = new Chart(ctx, {
+      type: "radar",
+      data: {
+        labels: attributes,
+        datasets: [
+          {
+            label: "Attributes",
+            data: dataValues,
+            backgroundColor: "rgba(0, 123, 255, 0.4)",
+            borderColor: "#007bff",
+            pointBackgroundColor: "#fff",
+          },
+        ],
+      },
+      options: {
+        scales: {
+          r: {
+            angleLines: { display: true },
+            suggestedMin: 0,
+            suggestedMax: 100,
+            pointLabels: { color: 'white' },
+            ticks: { color: 'white' }
+          },
+        },
+        plugins: {
+          legend: {
+            labels: { color: 'white' }
+          }
+        }
+      },
+    });
+
+    function updateChart() {
+      dataValues = attributes.map((attr, index) => {
+        return parseInt(document.getElementById(attr).value) || 0;
+      });
+      radarChart.data.datasets[0].data = dataValues;
+      radarChart.update();
+
+      const avg = dataValues.reduce((a, b) => a + b, 0) / dataValues.length;
+      document.getElementById("overallScore").innerText = Math.round(avg);
+    }
+
+    const inputContainer = document.getElementById("inputs");
+    attributes.forEach((attr, index) => {
+      const div = document.createElement("div");
+      div.classList.add("input-group");
+      div.innerHTML = `
+        <label>${attr}: </label>
+        <input type="number" id="${attr}" value="50" min="0" max="100" oninput="updateChart()" />
+      `;
+      inputContainer.appendChild(div);
+    });
+
+    updateChart();
+  </script>
+</body>
+</html>
