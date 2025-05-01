@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Attribute Tracker</title>
+  <title>Bro's Tracker</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
@@ -60,6 +60,7 @@
             backgroundColor: "rgba(0, 123, 255, 0.4)",
             borderColor: "#007bff",
             pointBackgroundColor: "#fff",
+            fill: true,
           },
         ],
       },
@@ -67,10 +68,18 @@
         scales: {
           r: {
             angleLines: { display: true },
-            suggestedMin: 0,
-            suggestedMax: 100,
-            pointLabels: { color: 'white' },
-            ticks: { color: 'white' }
+            min: 0,
+            max: 100,
+            pointLabels: { color: 'white', font: { size: 14 } },
+            ticks: {
+              backdropColor: 'transparent',
+              color: 'gray',
+              stepSize: 20,
+              showLabelBackdrop: false
+            },
+            grid: {
+              circular: true
+            }
           },
         },
         plugins: {
@@ -82,8 +91,9 @@
     });
 
     function updateChart() {
-      dataValues = attributes.map((attr, index) => {
-        return parseInt(document.getElementById(attr).value) || 0;
+      dataValues = attributes.map(attr => {
+        const val = parseInt(document.getElementById(attr).value);
+        return Math.min(100, Math.max(0, val));
       });
       radarChart.data.datasets[0].data = dataValues;
       radarChart.update();
@@ -93,7 +103,7 @@
     }
 
     const inputContainer = document.getElementById("inputs");
-    attributes.forEach((attr, index) => {
+    attributes.forEach(attr => {
       const div = document.createElement("div");
       div.classList.add("input-group");
       div.innerHTML = `
