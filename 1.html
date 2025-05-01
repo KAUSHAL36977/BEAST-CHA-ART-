@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bro's Tracker</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    :root {
+      --primary: #6200EA;
+      --primary-light: #9d46ff;
+      --secondary: #00E5FF;
+      --dark: #121212;
+      --dark-light: #1e1e1e;
+      --gray: #333;
+      --light-gray: #555;
+      --text: #ffffff;
+      --success: #00E676;
+      --warning: #FF9100;
+      --danger: #F50057;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: var(--dark);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(98, 0, 234, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(0, 229, 255, 0.07) 0%, transparent 20%);
+    }
+
+    .header {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--gray);
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      color: white;
+    }
+
+    .main-container {
+      width: 100%;
+      max-width: 1000px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    @media (min-width: 768px) {
+      .main-container {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .chart-container {
+      background: var(--dark-light);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      z-index: 1;
+    }
+
+    .chart-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      margin: 0 auto;
+    }
+
+    .inputs-container {
+      background: var(--dark-light);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .inputs-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+      z-index: 1;
+    }
+
+    .score-display {
+      text-align: center;
+      margin: 15px 0;
+    }
+
+    .score-label {
+      font-size: 14px;
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .score-value {
+      font-size: 60px;
+      font-weight: 700;
+      line-height: 1;
+      margin: 5px 0;
+      background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .attribute-slider {
+      width: 100%;
+      margin: 15px 0;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .slider-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .slider-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--secondary);
+      min-width: 40px;
+      text-align: right;
+    }
+
+    .slider-track {
+      width: 100%;
+      height: 6px;
+      background-color: var(--gray);
+      border-radius: 3px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .slider-progress {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 3px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .slider-thumb {
+      width: 18px;
+      height: 18px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      cursor: grab;
+    }
+
+    .slider-thumb:active {
+      cursor: grabbing;
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .task-log {
+      grid-column: 1 / -1;
+      background: var(--dark-light);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .task-log::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--secondary), var(--primary), var(--secondary));
+      z-index: 1;
+    }
+
+    .task-log h3 {
+      margin-bottom: 16px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      background: var(--gray);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      padding: 12px;
+      resize: none;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    textarea:focus {
+      outline: 2px solid var(--primary-light);
+    }
+
+    .button {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .button:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(98, 0, 234, 0.3);
+    }
+
+    .button-secondary {
+      background: transparent;
+      border: 1px solid var(--secondary);
+      color: var(--secondary);
+    }
+
+    .button-secondary:hover {
+      background: rgba(0, 229, 255, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 229, 255, 0.2);
+    }
+
+    .buttons-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .recent-logs {
+      margin-top: 20px;
+    }
+
+    .log-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .log-text {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .log-date {
+      font-size: 12px;
+      opacity: 0.6;
+    }
+    
+    /* Custom range input styling for mobile */
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      background: var(--gray);
+      border-radius: 3px;
+      outline: none;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      background: white;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+    
+    input[type="range"]::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      background: white;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      border: none;
+    }
+    
+    .glow {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: var(--primary);
+      filter: blur(50px);
+      opacity: 0.15;
+      z-index: -1;
+    }
+    
+    /* Level indicator */  
+    .level-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.07);
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      margin-bottom: 15px;
+    }
+    
+    .level-indicator span {
+      color: var(--secondary);
+      font-weight: 600;
+    }
+
+    /* Personality profile section */
+    .personality-profile {
+      grid-column: 1 / -1;
+      background: var(--dark-light);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .personality-profile::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--warning), var(--secondary));
+      z-index: 1;
+    }
+
+    .personality-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .personality-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .personality-type {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .personality-type-icon {
+      font-size: 28px;
+    }
+
+    .personality-type.positive {
+      color: var(--success);
+    }
+
+    .personality-type.negative {
+      color: var(--warning);
+    }
+
+    .personality-traits {
+      margin: 15px 0;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+
+    .trait-title {
+      font-weight: 600;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .trait-icon {
+      opacity: 0.8;
+    }
+
+    .trait-list {
+      margin: 8px 0;
+      padding-left: 25px;
+      list-style-type: circle;
+    }
+
+    .trait-list li {
+      margin: 5px 0;
+      opacity: 0.9;
+    }
+
+    .improvement-plan {
+      margin-top: 20px;
+    }
+
+    .improvement-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .improvement-items {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .improvement-item {
+      background: rgba(0, 229, 255, 0.05);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 10px;
+      padding: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .improvement-item:hover {
+      background: rgba(0, 229, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .improvement-focus {
+      font-weight: 600;
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .improvement-suggestions {
+      padding-left: 30px;
+    }
+
+    .improvement-suggestion {
+      margin: 8px 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .action-tip {
+      font-style: italic;
+      opacity: 0.7;
+      margin-top: 5px;
+      font-size: 13px;
+    }
+
+    .personality-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .personality-tab {
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .personality-tab.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .skill-radar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .skill-stat {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 100px;
+    }
+
+    .skill-value {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .skill-name {
+      font-size: 12px;
+      opacity: 0.7;
+      margin-top: 5px;
+    }
+
+    /* Badge for status */
+    .status-badge {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .status-high {
+      background: rgba(0, 230, 118, 0.2);
+      color: var(--success);
+    }
+
+    .status-medium {
+      background: rgba(255, 145, 0, 0.2);
+      color: var(--warning);
+    }
+
+    .status-low {
+      background: rgba(245, 0, 87, 0.2);
+      color: var(--danger);
+    }
+
+    .balance-meter {
+      height: 8px;
+      width: 100%;
+      background: var(--gray);
+      border-radius: 4px;
+      margin: 20px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .balance-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--danger), var(--warning), var(--success));
+      border-radius: 4px;
+      transition: width 0.8s ease;
+    }
+
+    .balance-pointer {
+      position: absolute;
+      top: -5px;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid white;
+    }
+
+    .balance-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      opacity: 0.8;
+      margin-top: 5px;
+    }
+
+    .shadow-pulse {
+      animation: shadowPulse 2s infinite;
+    }
+
+    @keyframes shadowPulse {
+      0%, 100% {
+        box-shadow: 0 0 0 rgba(0, 229, 255, 0);
+      }
+      50% {
+        box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow" style="top: 20%; left: 10%;"></div>
+  <div class="glow" style="bottom: 10%; right: 15%; background: var(--secondary);"></div>
+
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">B</div>
+      Bro's Tracker
+    </div>
+    <div class="level-indicator">
+      Level: <span>Pro</span>
+    </div>
+  </div>
+
+  <div class="main-container">
+    <!-- Personality Profile Section (NEW) -->
+    <div class="personality-profile">
+      <div class="personality-header">
+        <h3>Your Personality Profile</h3>
+        <div class="status-badge status-medium">
+          <span id="overall-status-icon">⚠️</span>
+          <span id="overall-status-text">Needs Focus</span>
+        </div>
+      </div>
+
+      <div class="personality-tabs">
+        <div class="personality-tab active" data-tab="profile">Current Profile</div>
+        <div class="personality-tab" data-tab="balance">Balance Meter</div>
+        <div class="personality-tab" data-tab="timeline">Progress Timeline</div>
+      </div>
+
+      <div class="tab-content active" id="profile-tab">
+        <div class="personality-type positive">
+          <span class="personality-type-icon" id="personality-icon">⚡</span>
+          <span id="personality-name">The Hustler</span>
+        </div>
+        
+        <div class="personality-traits">
+          <div class="trait-title">
+            <span class="trait-icon">✨</span> Strengths
+          </div>
+          <ul class="trait-list" id="personality-strengths">
+            <li>Energetic and action-oriented</li>
+            <li>Ambitious with clear goals</li>
+            <li>Physically strong and capable</li>
+          </ul>
+          
+          <div class="trait-title" style="margin-top: 15px;">
+            <span class="trait-icon">⚠️</span> Weaknesses
+          </div>
+          <ul class="trait-list" id="personality-weaknesses">
+            <li>May neglect emotional well-being</li>
+            <li>Can struggle with maintaining relationships</li>
+            <li>Might burn out from overexertion</li>
+          </ul>
+        </div>
+        
+        <div class="improvement-plan">
+          <h4 class="improvement-title">Personalized Improvement Plan</h4>
+          <div class="improvement-items" id="improvement-suggestions">
+            <!-- Improvement items will be dynamically added here -->
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="balance-tab">
+        <h4 style="margin-bottom: 15px;">Life Balance Meter</h4>
+        
+        <div class="skill-radar">
+          <!-- Skill stats will be dynamically added here -->
+        </div>
+        
+        <div class="balance-meter">
+          <div class="balance-fill" id="balance-fill"></div>
+          <div class="balance-pointer" id="balance-pointer"></div>
+        </div>
+        <div class="balance-labels">
+          <span>Imbalanced</span>
+          <span>Balanced</span>
+        </div>
+        
+        <p style="margin-top: 15px; font-size: 14px; opacity: 0.8;">
+          Your attributes variance is <span id="variance-value" style="font-weight: 600; color: var(--secondary);">28%</span>. 
+          <span id="balance-message">Work on bringing your lowest attributes closer to your highest ones.</span>
+        </p>
+      </div>
+
+      <div class="tab-content" id="timeline-tab">
+        <h4 style="margin-bottom: 15px;">Progress Timeline</h4>
+        <p style="opacity: 0.8; font-size: 14px;">Track your progress over time to see how your attributes evolve.</p>
+        
+        <div style="margin: 20px 0; text-align: center; opacity: 0.7;">
+          <p>Progress tracking will appear here after you save your first snapshot</p>
+          <button class="button button-secondary" style="margin-top: 15px;">Save Current Snapshot</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-wrapper">
+        <canvas id="radarChart"></canvas>
+      </div>
+      <div class="score-display">
+        <div class="score-label">Overall Score</div>
+        <div class="score-value" id="overallScore">50</div>
+      </div>
+    </div>
+
+    <div class="inputs-container" id="inputs">
+      <!-- Sliders will be inserted here -->
+    </div>
+
+    <div class="task-log">
+      <h3>Track Your Progress</h3>
+      <textarea id="taskLog" placeholder="Log your achievements or tasks here..."></textarea>
+      <div class="buttons-row">
+        <button class="button" id="saveLog">Save Log</button>
+        <button class="button button-secondary" id="clearLog">Clear</button>
+      </div>
+      
+      <div class="recent-logs">
+        <div class="log-item">
+          <div class="log-text">Completed 5-mile run</div>
+          <div class="log-date">Today, 9:45 AM</div>
+        </div>
+        <div class="log-item">
+          <div class="log-text">Read 50 pages of "Atomic Habits"</div>
+          <div class="log-date">Yesterday, 7:30 PM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Define personality archetypes
+    const personalityTypes = {
+      positive: [
+        {
+          name: "The Balanced Human",
+          icon: "⭐",
+          threshold: {
+            allAbove: 80
+          },
+          strengths: [
+            "Well-rounded in all life aspects",
+            "Harmonious balance of mind and body",
+            "Strong social connections with discipline"
+          ],
+          weaknesses: [
+            "May need to specialize more in certain areas",
+            "Could benefit from deeper expertise in specific domains"
+          ],
+          improvements: [
+            {
+              focus: "Specialization",
+              icon: "🎯",
+              suggestions: [
+                "Choose one attribute to master beyond excellence",
+                "Set a specific expertise goal in your strongest area"
+              ]
+            }
+          ]
+        },
+        {
+          name: "The Visionary",
+          icon: "🔭",
+          threshold: {
+            high: ["Ambition", "Intellect", "Mental"],
+            low: []
+          },
+          strengths: [
+            "Purpose-driven with clear direction",
+            "Deep thinker who sees the big picture",
+            "Mentally resilient with ambitious goals"
+          ],
+          weaknesses: [
+            "May neglect physical health",
+            "Could struggle with practical execution",
+            "Might need more social connection"
+          ],
+          improvements: [
+            {
+              focus: "Physical",
+              icon: "💪",
+              suggestions: [
+                "Add 20 minutes of daily exercise",
+                "Schedule regular movement breaks",
+                "Improve sleep quality and duration"
+              ]
+            },
+            {
+              focus: "Discipline",
+              icon: "⏰",
+              suggestions: [
+                "Create actionable steps for your vision",
+                "Use a habit tracker for daily consistency",
+                "Break large goals into manageable tasks"
+              ]
+            }
+          ]
+        },
+        {
+          name: "The Ironclad",
+          icon: "⚔️",
+          threshold: {
+            high: ["Physical", "Discipline", "Mental"],
+            low: []
+          },
+          strengths: [
+            "Physically strong and resilient",
+            "Mentally tough with strong willpower",
+            "Highly disciplined and consistent"
+          ],
+          weaknesses: [
+            "May neglect emotional connections",
+            "Could lack intellectual growth",
+            "Might be rigid in approach"
+          ],
+          improvements: [
+            {
+              focus: "Relationship",
+              icon: "❤️",
+              suggestions: [
+                "Schedule quality time with loved ones",
+                "Practice active listening daily",
+                "Join group activities to expand social circle"
+              ]
+            },
+            {
+              focus: "Intellect",
+              icon: "📚",
+              suggestions: [
+                "Read books outside your usual interests",
+                "Take an online course in a new subject",
+                "Engage in meaningful discussions with diverse viewpoints"
+              ]
+            }
+          ]
+        },
+        {
+          name: "The Wise Mentor",
+          icon: "🧠",
+          threshold: {
+            high: ["Intellect", "Relationship", "Discipline"],
+            low: []
+          },
+          strengths: [
+            "Intellectually sharp and knowledgeable",
+            "Strong interpersonal connections",
+            "Structured approach to helping others"
+          ],
+          weaknesses: [
+            "May neglect physical wellbeing",
+            "Could lack personal ambition",
+            "Might overthink situations"
+          ],
+          improvements: [
+            {
+              focus: "Physical",
+              icon: "💪",
+              suggestions: [
+                "Incorporate daily movement into routine",
+                "Try strength training 2-3 times per week",
+                "Practice mind-body exercises like yoga"
+              ]
+            },
+            {
+              focus: "Ambition",
+              icon: "🚀",
+              suggestions: [
+                "Set personal growth goals beyond helping others",
+                "Pursue a passion project just for yourself",
+                "Challenge yourself with new achievements"
+              ]
+            }
+          ]
+        },
+        {
+          name: "The Trailblazer",
+          icon: "🔥",
+          threshold: {
+            high: ["Ambition", "Physical", "Relationship"],
+            low: []
+          },
+          strengths: [
+            "Highly driven with clear direction",
+            "Physically energetic and capable",
+            "Charismatic with strong social skills"
+          ],
+          weaknesses: [
+            "May lack deep intellectual focus",
+            "Could struggle with consistency",
+            "Might neglect mental wellbeing"
+          ],
+          improvements: [
+            {
+              focus: "Discipline",
+              icon: "⏰",
+              suggestions: [
+                "Implement structured daily routines",
+                "Use habit stacking for consistency",
+                "Track progress with measurable metrics"
+              ]
+            },
+            {
+              focus: "Mental",
+              icon: "🧘",
+              suggestions: [
+                "Practice daily meditation or mindfulness",
+                "Schedule regular reflection time",
+                "Maintain work-life boundaries for mental space"
+              ]
+            }
+          ]
+        }
+      ],
+      negative: [
+        {
+          name: "The Burned-Out Machine",
+          icon: "🔋",
+          threshold: {
+            high: ["Discipline", "Ambition"],
+            low: ["Mental", "Relationship"]
+          },
+          strengths: [
+            "Highly productive and driven",
+            "Excellent at getting tasks done",
+            "Strong work ethic"
+          ],
+          weaknesses: [
+            "Emotionally drained or numb",
+            "Poor relationship maintenance",
+            "Lack of joy and mental peace"
+          ],
+          improvements: [
+            {
+              focus: "Mental",
+              icon: "🧘",
+              suggestions: [
+                "Schedule non-negotiable rest periods",
+                "Practice daily meditation (start with 5 minutes)",
+                "Set firm boundaries between work and personal life"
+              ]
+            },
+            {
+              focus: "Relationship",
+              icon: "❤️",
+              suggestions: [
+                "Dedicate quality time to key relationships",
+                "Practice being present during conversations",
+                "Express appreciation to people in your life daily"
+              ]
+            }
+          ]
+        },
+        {
+          name: "The Lost Dreamer",
+          icon: "
