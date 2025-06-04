@@ -1,0 +1,88 @@
+/* Theme Variables */
+
+:root {
+    /* Dark Theme (Default) */
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2a2a2a;
+    --card-bg: rgba(42, 42, 42, 0.8);
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --accent-color: #6200EA;
+    --accent-hover: #9d46ff;
+    --border-radius: 12px;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --thumb-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    --slider-bg: #2a2a2a;
+    --slider-color: #6200EA;
+    --success-color: #4CAF50;
+    --warning-color: #FFC107;
+    --error-color: #F44336;
+}
+
+/* Light Theme */
+[data-theme="light"] {
+    --bg-primary: #f5f6fa;
+    --bg-secondary: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.8);
+    --text-primary: #18191a;
+    --text-secondary: #65676b;
+    --accent-color: #6200EA;
+    --accent-hover: #9d46ff;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --thumb-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --slider-bg: #e0e0e0;
+    --slider-color: #6200EA;
+}
+
+/* Theme Transitions */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background: var(--card-bg);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-primary);
+    box-shadow: var(--card-shadow);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+}
+
+.theme-toggle i {
+    font-size: 1.2em;
+}
+
+/* Glassmorphism Effects */
+.glass {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Neumorphism Effects */
+.neumorph {
+    background: var(--card-bg);
+    box-shadow: 
+        5px 5px 10px rgba(0, 0, 0, 0.2),
+        -5px -5px 10px rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius);
+}
+
+.neumorph-inset {
+    background: var(--card-bg);
+    box-shadow: 
+        inset 5px 5px 10px rgba(0, 0, 0, 0.2),
+        inset -5px -5px 10px rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius);
+} 

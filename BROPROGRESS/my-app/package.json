@@ -1,0 +1,31 @@
+{
+  "name": "brostracker",
+  "version": "1.0.0",
+  "description": "A full-stack application for tracking personal and group progress",
+  "scripts": {
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start:frontend": "cd frontend && npm start",
+    "start:backend": "cd backend && npm run dev",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "build": "cd frontend && npm run build",
+    "test": "concurrently \"cd frontend && npm test\" \"cd backend && npm test\"",
+    "lint": "concurrently \"cd frontend && npm run lint\" \"cd backend && npm run lint\"",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "docker:up": "docker-compose up",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build"
+  },
+  "keywords": [
+    "react",
+    "node",
+    "express",
+    "prisma",
+    "postgresql"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "prettier": "^3.0.0"
+  }
+} 

@@ -1,0 +1,102 @@
+.task-calendar-card {
+  background: var(--ambition-bg, #18181b);
+  color: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+  padding: 2rem 2rem 1.5rem 2rem;
+  margin: 2rem auto 0 auto;
+  max-width: 700px;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+.task-calendar-header {
+  margin-bottom: 1.2rem;
+}
+.task-calendar-header h3 {
+  color: #bb86fc;
+  margin-bottom: 0.2rem;
+}
+.task-calendar-header p {
+  color: #aaa;
+  font-size: 1rem;
+  margin: 0;
+}
+.task-calendar-content {
+  display: flex;
+  gap: 2.5rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.react-calendar {
+  border-radius: 12px;
+  border: none;
+  background: #23232b;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+.react-calendar__tile {
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.react-calendar__tile--active {
+  background: #bb86fc !important;
+  color: #fff !important;
+}
+.task-day {
+  background: #7b2cbf !important;
+  color: #fff !important;
+}
+.task-calendar-list {
+  flex: 1;
+  min-width: 220px;
+}
+.task-calendar-list h4 {
+  margin-top: 0;
+  color: #bb86fc;
+}
+.no-tasks {
+  color: #aaa;
+  font-style: italic;
+}
+.calendar-task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #23232b;
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  margin-bottom: 0.7rem;
+  font-size: 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  transition: background 0.2s;
+}
+.calendar-task-item.completed {
+  background: rgba(67,160,71,0.13);
+  color: #43a047;
+}
+.calendar-task-status {
+  margin-left: 1rem;
+  font-size: 1.2rem;
+}
+.calendar-task-status.pending {
+  color: #fbc02d;
+}
+
+/* Light theme support */
+body:not([style*="background-color: rgb(26, 26, 26)"]) .task-calendar-card {
+  background: #fff;
+  color: #222;
+}
+body:not([style*="background-color: rgb(26, 26, 26)"]) .react-calendar {
+  background: #f5f5f5;
+  color: #222;
+}
+body:not([style*="background-color: rgb(26, 26, 26)"]) .calendar-task-item {
+  background: #f5f5f5;
+  color: #222;
+}
+body:not([style*="background-color: rgb(26, 26, 26)"]) .calendar-task-item.completed {
+  background: rgba(67,160,71,0.13);
+  color: #43a047;
+} 

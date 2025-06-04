@@ -1,0 +1,77 @@
+{
+    "attributes": {
+        "labels": ["Physical", "Mental", "Intellect", "Ambition", "Discipline", "Relationship"],
+        "values": [50, 50, 50, 50, 50, 50],
+        "maxValue": 100,
+        "levels": {
+            "Physical": {
+                "level": 1,
+                "xp": 0,
+                "nextLevel": 100,
+                "tasks": [
+                    { "id": "p1", "title": "Run 10km without stopping", "points": 3, "completed": false },
+                    { "id": "p2", "title": "Wake up at 5 AM 5 days in a row", "points": 2, "completed": false },
+                    { "id": "p3", "title": "No junk food for a week", "points": 2, "completed": false },
+                    { "id": "p4", "title": "Failed to work out for 3 days", "points": -2, "completed": false },
+                    { "id": "p5", "title": "Slept < 5 hours for 2 nights", "points": -1, "completed": false }
+                ]
+            },
+            "Mental": {
+                "level": 1,
+                "xp": 0,
+                "nextLevel": 100,
+                "tasks": [
+                    { "id": "m1", "title": "Meditated for 10 mins daily for a week", "points": 2, "completed": false },
+                    { "id": "m2", "title": "Read a non-fiction book", "points": 3, "completed": false },
+                    { "id": "m3", "title": "Kept a gratitude journal", "points": 2, "completed": false },
+                    { "id": "m4", "title": "Doomscrolled for more than 1 hour", "points": -2, "completed": false },
+                    { "id": "m5", "title": "Didn't sleep well (mental fatigue)", "points": -1, "completed": false }
+                ]
+            },
+            "Intellect": {
+                "level": 1,
+                "xp": 0,
+                "nextLevel": 100,
+                "tasks": [
+                    { "id": "i1", "title": "Solved 3 LeetCode/Logic puzzles", "points": 2, "completed": false },
+                    { "id": "i2", "title": "Learned something new (course, skill)", "points": 3, "completed": false },
+                    { "id": "i3", "title": "Wasted time on useless content", "points": -2, "completed": false },
+                    { "id": "i4", "title": "Avoided learning for a week", "points": -3, "completed": false }
+                ]
+            },
+            "Ambition": {
+                "level": 1,
+                "xp": 0,
+                "nextLevel": 100,
+                "tasks": [
+                    { "id": "a1", "title": "Set a clear weekly goal and achieved it", "points": 2, "completed": false },
+                    { "id": "a2", "title": "Applied for a new opportunity", "points": 2, "completed": false },
+                    { "id": "a3", "title": "Made a vision board / goal planner", "points": 3, "completed": false },
+                    { "id": "a4", "title": "Drifted aimlessly, no plan for 3+ days", "points": -2, "completed": false }
+                ]
+            },
+            "Discipline": {
+                "level": 1,
+                "xp": 0,
+                "nextLevel": 100,
+                "tasks": [
+                    { "id": "d1", "title": "Followed routine strictly for 5 days", "points": 3, "completed": false },
+                    { "id": "d2", "title": "Avoided distractions (no Insta etc.)", "points": 2, "completed": false },
+                    { "id": "d3", "title": "Broke a habit repeatedly", "points": -2, "completed": false },
+                    { "id": "d4", "title": "Procrastinated hard tasks", "points": -2, "completed": false }
+                ]
+            },
+            "Relationship": {
+                "level": 1,
+                "xp": 0,
+                "nextLevel": 100,
+                "tasks": [
+                    { "id": "r1", "title": "Had deep 1:1 conversation with loved one", "points": 2, "completed": false },
+                    { "id": "r2", "title": "Resolved a conflict peacefully", "points": 3, "completed": false },
+                    { "id": "r3", "title": "Did something kind for someone", "points": 2, "completed": false },
+                    { "id": "r4", "title": "Ignored or fought with close ones", "points": -2, "completed": false }
+                ]
+            }
+        }
+    }
+} 

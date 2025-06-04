@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bro's Tracker</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <div class="logo-icon">B</div>
+      Bro's Tracker
+    </div>
+  </header>
+
+  <main class="main-container">
+    <div class="chart-container">
+      <div class="chart-wrapper">
+        <canvas id="progressChart"></canvas>
+      </div>
+    </div>
+
+    <div class="inputs-container">
+      <div class="score-display">
+        <div class="score-label">Average Score</div>
+        <div class="score-value">0</div>
+      </div>
+
+      <div class="attribute-slider">
+        <div class="slider-header">
+          <span class="slider-label">Strength</span>
+          <span class="slider-value" id="strength-value">0</span>
+        </div>
+        <input type="range" id="strength-slider" min="0" max="100" value="0" class="slider-track">
+      </div>
+
+      <div class="attribute-slider">
+        <div class="slider-header">
+          <span class="slider-label">Cardio</span>
+          <span class="slider-value" id="cardio-value">0</span>
+        </div>
+        <input type="range" id="cardio-slider" min="0" max="100" value="0" class="slider-track">
+      </div>
+
+      <div class="attribute-slider">
+        <div class="slider-header">
+          <span class="slider-label">Flexibility</span>
+          <span class="slider-value" id="flexibility-value">0</span>
+        </div>
+        <input type="range" id="flexibility-slider" min="0" max="100" value="0" class="slider-track">
+      </div>
+
+      <div class="attribute-slider">
+        <div class="slider-header">
+          <span class="slider-label">Nutrition</span>
+          <span class="slider-value" id="nutrition-value">0</span>
+        </div>
+        <input type="range" id="nutrition-slider" min="0" max="100" value="0" class="slider-track">
+      </div>
+
+      <div class="attribute-slider">
+        <div class="slider-header">
+          <span class="slider-label">Sleep</span>
+          <span class="slider-value" id="sleep-value">0</span>
+        </div>
+        <input type="range" id="sleep-slider" min="0" max="100" value="0" class="slider-track">
+      </div>
+
+      <div class="attribute-slider">
+        <div class="slider-header">
+          <span class="slider-label">Stress</span>
+          <span class="slider-value" id="stress-value">0</span>
+        </div>
+        <input type="range" id="stress-slider" min="0" max="100" value="0" class="slider-track">
+      </div>
+    </div>
+
+    <div class="task-log">
+      <h3>Task Log</h3>
+      <textarea id="taskInput" placeholder="Enter your task here..."></textarea>
+      <button id="addTaskBtn">Add Task</button>
+      <div class="task-list"></div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

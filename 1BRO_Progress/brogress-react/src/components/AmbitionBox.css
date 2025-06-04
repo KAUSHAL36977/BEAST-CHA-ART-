@@ -1,0 +1,327 @@
+:root {
+  --color-bg-dark: #0f0f0f;
+  --color-bg-card: #1a1a1a;
+  --color-bg-glass: rgba(30, 30, 40, 0.7);
+  --color-border-glass: rgba(255,255,255,0.08);
+  --color-text-main: #ffffff;
+  --color-text-secondary: #e0e0e0;
+  --color-accent-indigo: #6366f1;
+  --color-accent-teal: #14b8a6;
+  --color-accent-violet: #7c3aed;
+  --color-gradient: linear-gradient(90deg, #6366f1, #7c3aed);
+}
+
+.ambition-box {
+  background: var(--color-bg-card);
+  color: var(--color-text-main);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(20, 184, 166, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border-glass);
+  padding: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  transition: background 0.3s;
+}
+
+.ambition-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.ambition-header h2 {
+  font-size: 1.5rem;
+  color: var(--color-accent-violet);
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.ambition-add {
+  font-size: 1.2rem;
+  color: var(--color-accent-indigo);
+}
+
+.ambition-attr-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ambition-attr-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.ambition-attr-item:last-child {
+  border-bottom: none;
+}
+
+.ambition-attr-list span {
+  color: var(--color-accent-indigo);
+}
+
+.ambition-plus, .ambition-big-plus {
+  background: var(--color-gradient);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.13);
+}
+.ambition-plus:hover, .ambition-big-plus:hover {
+  background: linear-gradient(90deg, #14b8a6, #6366f1);
+  box-shadow: 0 8px 32px rgba(99,102,241,0.18);
+  transform: scale(1.08);
+}
+
+.ambition-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.ambition-form {
+  background: #18181b;
+  color: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  min-width: 400px;
+  max-width: 90vw;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.ambition-form label {
+  color: var(--color-accent-violet);
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  margin-bottom: 0.3rem;
+}
+.ambition-form textarea {
+  width: 100%;
+  min-height: 60px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border-glass);
+  padding: 0.7rem;
+  font-size: 1rem;
+  background: var(--color-bg-glass);
+  color: var(--color-text-main);
+  resize: vertical;
+}
+.ambition-form-row {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.ambition-form-row > div {
+  flex: 1 1 120px;
+  display: flex;
+  flex-direction: column;
+}
+.ambition-form select, .ambition-form input[type="date"] {
+  border-radius: 8px;
+  border: 1px solid var(--color-border-glass);
+  padding: 0.5rem;
+  font-size: 1rem;
+  background: var(--color-bg-glass);
+  color: var(--color-text-main);
+}
+.ambition-points {
+  margin-top: 0.3rem;
+  color: #bb86fc;
+  font-weight: bold;
+}
+.ambition-form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+.ambition-save {
+  background: var(--color-gradient);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.13);
+  transition: all 0.3s cubic-bezier(.4,0,.2,1);
+}
+.ambition-save:hover {
+  background: linear-gradient(90deg, #14b8a6, #6366f1);
+  box-shadow: 0 8px 32px rgba(99,102,241,0.18);
+  transform: translateY(-2px) scale(1.03);
+}
+.ambition-cancel {
+  background: var(--color-bg-glass);
+  color: var(--color-accent-violet);
+  border: 1px solid var(--color-accent-violet);
+  border-radius: 8px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(.4,0,.2,1);
+}
+.ambition-cancel:hover {
+  background: var(--color-accent-violet);
+  color: #fff;
+}
+
+/* Light theme support */
+body:not([style*="background-color: rgb(26, 26, 26)"]) .ambition-box {
+  background: #fff;
+  color: #222;
+}
+body:not([style*="background-color: rgb(26, 26, 26)"]) .ambition-form {
+  background: #fff;
+  color: #222;
+}
+body:not([style*="background-color: rgb(26, 26, 26)"]) .ambition-form textarea,
+body:not([style*="background-color: rgb(26, 26, 26)"]) .ambition-form select,
+body:not([style*="background-color: rgb(26, 26, 26)"]) .ambition-form input[type="date"] {
+  background: #f5f5f5;
+  color: #222;
+  border: 1px solid #ccc;
+}
+body:not([style*="background-color: rgb(26, 26, 26)"]) .ambition-cancel {
+  background: #f5f5f5;
+  color: #222;
+  border: 1px solid #ccc;
+}
+
+.ambition-goal-list {
+  margin-top: 2rem;
+}
+.ambition-goal-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ambition-goal-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-bg-glass);
+  color: var(--color-text-secondary);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 4px rgba(99,102,241,0.08);
+  border: 1px solid var(--color-border-glass);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+body:not([style*="background-color: rgb(26, 26, 26)"]) .ambition-goal-item {
+  background: #f5f5f5;
+  color: #222;
+}
+.ambition-goal-actions button {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  color: #bb86fc;
+  transition: color 0.2s, transform 0.2s;
+}
+.ambition-goal-actions button:hover {
+  color: #7b2cbf;
+  transform: scale(1.2);
+}
+
+.ambition-goal-item.completed {
+  background: rgba(20, 184, 166, 0.13);
+  color: #14b8a6;
+}
+.ambition-goal-item.overdue {
+  border-left: 6px solid #e53935;
+  background: rgba(229,57,53,0.08);
+}
+.priority-badge.high {
+  background: var(--color-accent-indigo) !important;
+  color: #fff !important;
+  font-weight: bold;
+  border-radius: 4px;
+  padding: 0.1rem 0.5rem;
+  margin-left: 8px;
+  font-size: 0.9em;
+}
+
+/* Ensure toggle button contrast */
+.ambition-theme-toggle {
+  border: 2px solid #bb86fc;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  background: #fff;
+  color: #222;
+}
+body[style*="background-color: rgb(26, 26, 26)"] .ambition-theme-toggle {
+  background: #23232b;
+  color: #fff;
+  border: 2px solid #fbc02d;
+}
+
+.ambition-save, .ambition-cancel, .ambition-plus, .ambition-big-plus, .dashboard-button, .ambition-goal-actions button, .ambition-theme-toggle, .ambition-add, .ambition-cancel, .ambition-save {
+  transition: all 0.3s cubic-bezier(.4,0,.2,1);
+}
+.ambition-save:active, .ambition-cancel:active, .ambition-plus:active, .ambition-big-plus:active, .dashboard-button:active, .ambition-goal-actions button:active, .ambition-theme-toggle:active {
+  transform: scale(0.96);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+}
+.ambition-save:focus, .ambition-cancel:focus, .ambition-plus:focus, .ambition-big-plus:focus, .dashboard-button:focus, .ambition-goal-actions button:focus, .ambition-theme-toggle:focus {
+  outline: 2px solid #bb86fc;
+  outline-offset: 2px;
+}
+
+/* For mobile tap feedback */
+@media (hover: none) and (pointer: coarse) {
+  .ambition-save:active, .ambition-cancel:active, .ambition-plus:active, .ambition-big-plus:active, .dashboard-button:active, .ambition-goal-actions button:active, .ambition-theme-toggle:active {
+    background-color: #e0e0e0 !important;
+    filter: brightness(0.95);
+  }
+}
+
+.ambition-goal-item b {
+  color: var(--color-accent-indigo);
+}
+.ambition-goal-item .priority-badge {
+  color: var(--color-accent-indigo);
+}
+.ambition-goal-item small,
+.ambition-goal-item .badge,
+.ambition-goal-item span:not(.priority-badge):not([style*="background"]),
+.ambition-goal-item .ambition-goal-actions button {
+  color: var(--color-text-secondary);
+}
+
+.ambition-goal-list h3 {
+  color: var(--color-accent-indigo);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.ambition-filters button.active {
+  color: var(--color-accent-teal);
+  font-weight: 600;
+}
+
+.ambition-form input::placeholder,
+.ambition-form textarea::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.8;
+} 
